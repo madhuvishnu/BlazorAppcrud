@@ -1,0 +1,53 @@
+﻿@page "/Person"
+@inject IPersonService PersonService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Persons</PageTitle>
+
+<h3>Persons</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Role</th>
+            <th>City</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var person in PersonService.persons)
+        {
+            <tr>
+                <td>@person.id</td>
+                <td>@person.Name</td>
+                <td>@person.age</td>
+                <td>@person.Role</td>
+                <td>@person.city</td>
+                <td>
+                    <button class="btn btn-primary" @onclick="(()=> ShowPerson(person.id))"><i class="oi oi-pencil"></i></button>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+<button class="btn btn-primary" @onclick="CreateNewPerson">Add New Person</button>
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await PersonService.GetPersons();
+    }
+
+    void ShowPerson(int id)
+    {
+        NavigationManager.NavigateTo($"person1/{id}");
+    }
+
+    void CreateNewPerson()
+    {
+        NavigationManager.NavigateTo("/person1");
+    }
+}
